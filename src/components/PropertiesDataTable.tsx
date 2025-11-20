@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Table,
   TableBody,
@@ -30,15 +31,24 @@ const statusColors: Record<PropertyStatus, string> = {
   'Rented': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
 };
 export function PropertiesDataTable({ properties, limit }: PropertiesDataTableProps) {
+  const navigate = useNavigate();
   const openSheet = usePropertyStore(s => s.openSheet);
   const deleteProperty = usePropertyStore(s => s.deleteProperty);
   const displayedProperties = limit ? properties.slice(0, limit) : properties;
-  const handleDelete = (id: string) => {
+  const handleDelete = (e: React.MouseEvent, id: string) => {
+    e.stopPropagation();
     toast.promise(deleteProperty(id), {
       loading: 'Deleting property...',
       success: 'Property deleted successfully!',
       error: 'Failed to delete property.',
     });
+  };
+  const handleEdit = (e: React.MouseEvent, prop: Property) => {
+    e.stopPropagation();
+    openSheet(prop);
+  };
+  const handleRowClick = (id: string) => {
+    navigate(`/properties/${id}`);
   };
   return (
     <>
@@ -56,7 +66,7 @@ export function PropertiesDataTable({ properties, limit }: PropertiesDataTablePr
           <TableBody>
             {displayedProperties.length > 0 ? (
               displayedProperties.map((prop) => (
-                <TableRow key={prop.id}>
+                <TableRow key={prop.id} onClick={() => handleRowClick(prop.id)} className="cursor-pointer hover:bg-muted/50">
                   <TableCell>
                     <div className="flex items-center gap-4">
                       <img
@@ -83,16 +93,16 @@ export function PropertiesDataTable({ properties, limit }: PropertiesDataTablePr
                   <TableCell className="text-right">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon">
+                        <Button variant="ghost" size="icon" onClick={(e) => e.stopPropagation()}>
                           <MoreHorizontal className="h-4 w-4" />
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => openSheet(prop)}>
+                        <DropdownMenuItem onClick={(e) => handleEdit(e, prop)}>
                           <Pencil className="mr-2 h-4 w-4" />
                           Edit
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleDelete(prop.id)} className="text-red-600 focus:text-red-600">
+                        <DropdownMenuItem onClick={(e) => handleDelete(e, prop.id)} className="text-red-600 focus:text-red-600">
                           <Trash2 className="mr-2 h-4 w-4" />
                           Delete
                         </DropdownMenuItem>

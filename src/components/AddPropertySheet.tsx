@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import {
@@ -12,7 +12,6 @@ import {
 } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
@@ -25,9 +24,11 @@ import { usePropertyStore } from '@/hooks/use-property-store';
 import type { Property, PropertyStatus, PropertyType } from '@shared/types';
 import { Toaster, toast } from 'sonner';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Textarea } from './ui/textarea';
 const propertySchema = z.object({
   name: z.string().min(3, 'Name must be at least 3 characters'),
   address: z.string().min(5, 'Address must be at least 5 characters'),
+  description: z.string().min(10, 'Description must be at least 10 characters').optional(),
   type: z.enum(['Apartment', 'House', 'Villa', 'Office', 'Land']),
   status: z.enum(['For Sale', 'For Rent', 'Sold', 'Rented']),
   imageUrl: z.string().url('Must be a valid URL'),
@@ -50,7 +51,7 @@ export function AddPropertySheet() {
   const form = useForm<PropertyFormData>({
     resolver: zodResolver(propertySchema),
     defaultValues: {
-      name: '', address: '', type: 'Apartment', status: 'For Rent', imageUrl: '',
+      name: '', address: '', description: '', type: 'Apartment', status: 'For Rent', imageUrl: '',
       price: 0, bedrooms: 0, bathrooms: 0, areaSqft: 0, latitude: 0, longitude: 0,
     }
   });
@@ -59,11 +60,11 @@ export function AddPropertySheet() {
       form.reset(selectedProperty);
     } else {
       form.reset({
-        name: '', address: '', type: 'Apartment', status: 'For Rent', imageUrl: '',
+        name: '', address: '', description: '', type: 'Apartment', status: 'For Rent', imageUrl: '',
         price: 0, bedrooms: 0, bathrooms: 0, areaSqft: 0, latitude: 0, longitude: 0,
       });
     }
-  }, [selectedProperty, form.reset, isSheetOpen]);
+  }, [selectedProperty, form, isSheetOpen]);
   const onSubmit = async (data: PropertyFormData) => {
     const promise = selectedProperty
       ? updateProperty(selectedProperty.id, data)
@@ -95,7 +96,10 @@ export function AddPropertySheet() {
                     <FormItem><FormLabel>Address</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
                   )} />
                   <FormField control={form.control} name="imageUrl" render={({ field }) => (
-                    <FormItem><FormLabel>Image URL</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
+                    <FormItem><FormLabel>Image URL</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormMessage></FormItem>
+                  )} />
+                   <FormField control={form.control} name="description" render={({ field }) => (
+                    <FormItem><FormLabel>Description</FormLabel><FormControl><Textarea placeholder="A brief description of the property..." {...field} /></FormControl><FormMessage /></FormItem>
                   )} />
                   <div className="grid grid-cols-2 gap-4">
                     <FormField control={form.control} name="type" render={({ field }) => (
@@ -120,25 +124,25 @@ export function AddPropertySheet() {
                     )} />
                   </div>
                   <FormField control={form.control} name="price" render={({ field }) => (
-                    <FormItem><FormLabel>Price</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormItem>
+                    <FormItem><FormLabel>Price</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormMessage></FormItem>
                   )} />
                   <div className="grid grid-cols-3 gap-4">
                     <FormField control={form.control} name="bedrooms" render={({ field }) => (
-                      <FormItem><FormLabel>Bedrooms</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormItem>
+                      <FormItem><FormLabel>Bedrooms</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormMessage></FormItem>
                     )} />
                     <FormField control={form.control} name="bathrooms" render={({ field }) => (
-                      <FormItem><FormLabel>Bathrooms</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormItem>
+                      <FormItem><FormLabel>Bathrooms</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormMessage></FormItem>
                     )} />
                     <FormField control={form.control} name="areaSqft" render={({ field }) => (
-                      <FormItem><FormLabel>Area (sqft)</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormItem>
+                      <FormItem><FormLabel>Area (sqft)</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormMessage></FormItem>
                     )} />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <FormField control={form.control} name="latitude" render={({ field }) => (
-                      <FormItem><FormLabel>Latitude</FormLabel><FormControl><Input type="number" step="any" {...field} /></FormControl><FormMessage /></FormItem>
+                      <FormItem><FormLabel>Latitude</FormLabel><FormControl><Input type="number" step="any" {...field} /></FormControl><FormMessage /></FormMessage></FormItem>
                     )} />
                     <FormField control={form.control} name="longitude" render={({ field }) => (
-                      <FormItem><FormLabel>Longitude</FormLabel><FormControl><Input type="number" step="any" {...field} /></FormControl><FormMessage /></FormItem>
+                      <FormItem><FormLabel>Longitude</FormLabel><FormControl><Input type="number" step="any" {...field} /></FormControl><FormMessage /></FormMessage></FormItem>
                     )} />
                   </div>
                 </div>

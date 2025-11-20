@@ -14,6 +14,7 @@ import { HomePage } from '@/pages/HomePage'
 import { PropertiesPage } from '@/pages/PropertiesPage';
 import { MapPage } from '@/pages/MapPage';
 import { AppLayout } from './components/layout/AppLayout';
+import { PropertyDetailPage } from './pages/PropertyDetailPage';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -23,6 +24,11 @@ const router = createBrowserRouter([
   {
     path: "/properties",
     element: <AppLayout container><PropertiesPage /></AppLayout>,
+    errorElement: <RouteErrorBoundary />,
+  },
+  {
+    path: "/properties/:id",
+    element: <AppLayout container><PropertyDetailPage /></AppLayout>,
     errorElement: <RouteErrorBoundary />,
   },
   {

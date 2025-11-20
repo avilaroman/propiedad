@@ -40,6 +40,7 @@ export class PropertyEntity extends IndexedEntity<Property> {
     id: "",
     name: "",
     address: "",
+    description: "",
     type: "Apartment",
     status: "For Rent",
     imageUrl: "",
@@ -50,6 +51,8 @@ export class PropertyEntity extends IndexedEntity<Property> {
     latitude: 0,
     longitude: 0,
     createdAt: 0,
+    tenants: [],
+    maintenanceRequests: [],
   };
   static seedData = MOCK_PROPERTIES;
 }

@@ -11,6 +11,7 @@ type PropertyState = {
 };
 type PropertyActions = {
   fetchProperties: () => Promise<void>;
+  fetchPropertyById: (id: string) => Promise<Property | undefined>;
   addProperty: (property: Omit<Property, 'id' | 'createdAt'>) => Promise<Property | undefined>;
   updateProperty: (id: string, property: Partial<Property>) => Promise<Property | undefined>;
   deleteProperty: (id: string) => Promise<void>;
@@ -34,6 +35,28 @@ export const usePropertyStore = create<PropertyState & PropertyActions>()(
         const errorMessage = error instanceof Error ? error.message : 'Failed to fetch properties';
         set({ error: errorMessage, isLoading: false });
         console.error(errorMessage);
+      }
+    },
+    fetchPropertyById: async (id: string) => {
+      set({ isLoading: true, error: null });
+      try {
+        const property = await api<Property>(`/api/properties/${id}`);
+        set(state => {
+          // Update property in the list if it exists, otherwise add it
+          const index = state.properties.findIndex(p => p.id === id);
+          if (index !== -1) {
+            state.properties[index] = property;
+          } else {
+            state.properties.push(property);
+          }
+          state.isLoading = false;
+        });
+        return property;
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Failed to fetch property';
+        set({ error: errorMessage, isLoading: false });
+        console.error(errorMessage);
+        return undefined;
       }
     },
     addProperty: async (propertyData) => {
