@@ -7,9 +7,9 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ArrowLeft, Bath, BedDouble, Building, Calendar, DollarSign, Home, MapPin, RulerSquare, Wrench, Users } from 'lucide-react';
+import { ArrowLeft, Bath, BedDouble, Calendar, DollarSign, Home, MapPin, RulerSquare, Wrench, Users } from 'lucide-react';
 import { format } from 'date-fns';
-import type { Property, PropertyStatus, Tenant, MaintenanceRequest } from '@shared/types';
+import type { Property, PropertyStatus } from '@shared/types';
 const statusColors: Record<PropertyStatus, string> = {
   'For Sale': 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
   'For Rent': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
@@ -38,7 +38,8 @@ export function PropertyDetailPage() {
     if (id && !property) {
       fetchPropertyById(id);
     }
-  }, [id, property, fetchPropertyById]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, property]); // fetchPropertyById is stable from zustand but can cause issues if not memoized, removing it is safer.
   if (isLoading && !property) {
     return (
       <div className="space-y-8">
@@ -60,7 +61,7 @@ export function PropertyDetailPage() {
       </div>
     );
   }
-  if (error) {
+  if (error && !property) {
     return <div className="text-center text-red-500">Error: {error}</div>;
   }
   if (!property) {
