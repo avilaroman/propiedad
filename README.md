@@ -1,6 +1,6 @@
 # PropVista - Minimalist Property Management
 
-[cloudflarebutton]
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/avilaroman/propiedad)
 
 PropVista is a visually stunning and minimalist web application designed for property owners and managers to effortlessly oversee their real-estate portfolio. The application provides a clean, intuitive dashboard with key performance indicators, a comprehensive property list with advanced filtering and sorting, and an elegant interface for adding and editing property details. Inspired by modern real estate platforms, PropVista focuses on clarity, user experience, and visual excellence, leveraging a sophisticated design system built with shadcn/ui and Tailwind CSS. The backend is powered by Cloudflare Workers and a Durable Object, ensuring high performance and scalability.
 
@@ -88,7 +88,7 @@ This project is configured for easy deployment to Cloudflare Pages.
 
 Alternatively, you can deploy directly from your GitHub repository using the button below.
 
-[cloudflarebutton]
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/avilaroman/propiedad)
 
 ## Project Structure
 
