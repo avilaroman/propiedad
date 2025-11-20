@@ -1,6 +1,6 @@
 import React from "react";
 import { useLocation, Link } from "react-router-dom";
-import { Building, LayoutDashboard, Building2 } from "lucide-react";
+import { Building, LayoutDashboard, Building2, MapPin } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 const menuItems = [
   { href: "/", icon: LayoutDashboard, label: "Dashboard" },
   { href: "/properties", icon: Building2, label: "Properties" },
+  { href: "/map", icon: MapPin, label: "Map View" },
 ];
 export function AppSidebar(): JSX.Element {
   const location = useLocation();

@@ -12,6 +12,7 @@ import { RouteErrorBoundary } from '@/components/RouteErrorBoundary';
 import '@/index.css'
 import { HomePage } from '@/pages/HomePage'
 import { PropertiesPage } from '@/pages/PropertiesPage';
+import { MapPage } from '@/pages/MapPage';
 import { AppLayout } from './components/layout/AppLayout';
 const router = createBrowserRouter([
   {
@@ -22,6 +23,11 @@ const router = createBrowserRouter([
   {
     path: "/properties",
     element: <AppLayout container><PropertiesPage /></AppLayout>,
+    errorElement: <RouteErrorBoundary />,
+  },
+  {
+    path: "/map",
+    element: <AppLayout className="h-screen py-0" contentClassName="h-full flex flex-col"><MapPage /></AppLayout>,
     errorElement: <RouteErrorBoundary />,
   },
 ]);
